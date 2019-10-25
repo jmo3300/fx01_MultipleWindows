@@ -29,7 +29,8 @@ import javafx.stage.Stage;
  * Java 13
  * 
  * JavaFX 13
- * 
+ *
+ * 3. Implementation
  * 
  * 3.1. BasePane, First Window and a single Controller
  * 
@@ -65,7 +66,12 @@ import javafx.stage.Stage;
  * 
  * We inject and implement these messages into the Main class.
  * 
- *
+ * 3.4. Paging Feature for Choosing the Current Window
+ * 
+ * Add previous and next button to the toolbar in main.fxml with the onAction methods previousWindow, nextWindow.
+ * Inject and implement these two messages.
+ * 
+ * 
  * @author jmo3300
  * @version 0.0.1
  */
@@ -139,17 +145,34 @@ public class Main extends Application {
 		
 	}
 	
+	@FXML
+	public void previousWindow(Event event) {
+
+		int idxCurrent = windows.indexOf(windowCurrent);
+		int idxNew = idxCurrent > 0 ? idxCurrent - 1 : idxCurrent;
+		setWindow(event, idxNew);
+
+	}
+
+	@FXML
+	public void nextWindow(Event event) {
+
+		int idxCurrent = windows.indexOf(windowCurrent);
+		int idxNew = idxCurrent < windows.size() - 1 ? idxCurrent + 1 : idxCurrent;
+		setWindow(event, idxNew);
+
+	}
 	
-	private void setWindow(Event event, int idx_new) {
+	private void setWindow(Event event, int idxNew) {
 
-		int idx_current = windows.indexOf(windowCurrent);
+		int idxCurrent = windows.indexOf(windowCurrent);
 
-		if (idx_current == idx_new) {
+		if (idxCurrent == idxNew) {
 			return;
 		}
 		
 		root.getChildren().remove(windowCurrent);
-		windowCurrent = windows.get(idx_new);
+		windowCurrent = windows.get(idxNew);
 		root.getChildren().add(windowCurrent);
 		
 	}
