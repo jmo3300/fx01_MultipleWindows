@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -71,6 +76,11 @@ import javafx.stage.Stage;
  * Add previous and next button to the toolbar in main.fxml with the onAction methods previousWindow, nextWindow.
  * Inject and implement these two messages.
  * 
+ * 3.5. Additional Features on the Windows for Choosing the Current Window
+ * 
+ * Window 0: Inputfield for the window no + go button
+ * Window 1: Choicebox
+ * Window 2: Radiobuttongroup
  * 
  * @author jmo3300
  * @version 0.0.1
@@ -83,6 +93,12 @@ public class Main extends Application {
 	private List<GridPane> windows = new ArrayList<GridPane>();
 	
 	private GridPane windowCurrent;
+	
+	@FXML
+	private TextField windowNoTextField;
+	
+	@FXML
+	private ChoiceBox windowChoiceBox;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -106,12 +122,26 @@ public class Main extends Application {
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/window2.fxml"));
 			fxmlLoader.setController(this);
-			windows.add((GridPane)fxmlLoader.load());			
+			windows.add((GridPane)fxmlLoader.load());
+			
+			windowChoiceBox.setItems(FXCollections.observableArrayList(
+			    "Window 0",
+			    "Window 1",
+			    "Window 2"
+			));
+			
+			windowChoiceBox.getSelectionModel().selectedIndexProperty().addListener(
+					new ChangeListener<Number>() {
+						public void changed(ObservableValue ov, Number idx, Number idx_new) {
+							setWindow(null, idx_new.intValue());
+						}
+					}
+			);
 			
 			windowCurrent = windows.get(1);
 			root.getChildren().add(windowCurrent);
 
-			Scene scene = new Scene(root, 600, 400);
+			Scene scene = new Scene(root, 600, 500);
 			scene.getStylesheets().add(getClass().getResource("/main.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -161,6 +191,21 @@ public class Main extends Application {
 		int idxNew = idxCurrent < windows.size() - 1 ? idxCurrent + 1 : idxCurrent;
 		setWindow(event, idxNew);
 
+	}
+	
+	@FXML
+	public void gotoWindow(Event event) {
+
+		try {
+            if(!windowNoTextField.getText().matches("[0-" + (windows.size() - 1) + "]")){
+            	windowNoTextField.setText(String.valueOf(windows.indexOf(windowCurrent)));
+            }
+		}catch (NumberFormatException nfe) {
+        	windowNoTextField.setText(String.valueOf(windows.indexOf(windowCurrent)));
+		}
+		
+		setWindow(event, Integer.parseInt(windowNoTextField.getText()));
+		
 	}
 	
 	private void setWindow(Event event, int idxNew) {

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -11,11 +14,28 @@
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="100.0" vgrow="SOMETIMES" />
+    <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label styleClass="windowLabel" text="Window 2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Label styleClass="windowLabel" text="Window 2" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+      <RadioButton mnemonicParsing="false" onAction="#setWindow0" text="Window 0" GridPane.rowIndex="1">
+         <toggleGroup>
+            <ToggleGroup fx:id="windowGroup" />
+         </toggleGroup>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </RadioButton>
+      <RadioButton mnemonicParsing="false" onAction="#setWindow1" text="Window 1" toggleGroup="$windowGroup" GridPane.rowIndex="2">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding></RadioButton>
+      <RadioButton mnemonicParsing="false" onAction="#setWindow2" text="Window 2" toggleGroup="$windowGroup" GridPane.rowIndex="3">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding></RadioButton>
    </children>
 </GridPane>
