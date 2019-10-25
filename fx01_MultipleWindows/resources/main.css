@@ -1,0 +1,8 @@
+/* 
+    Document   : application
+*/
+
+.windowLabel{
+    -fx-font-size: 32pt;
+    -fx-font-family: "Courier New";
+}
