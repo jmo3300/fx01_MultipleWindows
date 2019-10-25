@@ -1,5 +1,8 @@
 package main;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * fx01_MultipleWindows
@@ -95,6 +99,12 @@ import javafx.stage.Stage;
  * Now, the StackPane windowPane (more precise windowPane.getChiildren()) 
  * takes the role of the List<GridPane> windows.
  * 
+ * 4.2. Fade in/out (setOpacity via TimeLine) the current window
+ * 
+ * Only a visual effect hence all unused windows must be invisible.
+ * Otherwise one cannot use the controls on windows in the stack 
+ * underneath the window added latest to the stack.
+ * 
  * @author jmo3300
  * @version 0.0.1
  */
@@ -129,18 +139,21 @@ public class Main extends Application {
 			fxmlLoader = new FXMLLoader(getClass().getResource("/window0.fxml"));
 			fxmlLoader.setController(this);
 			GridPane window = fxmlLoader.load();
+			window.setOpacity(0.0);
 			window.setVisible(false);
 			windowPane.getChildren().add(window);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/window1.fxml"));
 			fxmlLoader.setController(this);
 			window = fxmlLoader.load();
+			window.setOpacity(0.0);
 			window.setVisible(false);
 			windowPane.getChildren().add(window);
 
 			fxmlLoader = new FXMLLoader(getClass().getResource("/window2.fxml"));
 			fxmlLoader.setController(this);
 			window = fxmlLoader.load();
+			window.setOpacity(0.0);
 			window.setVisible(false);
 			windowPane.getChildren().add(window);
 
@@ -224,11 +237,15 @@ public class Main extends Application {
 	private void setWindow(Event event, int idx) {
 
 		if (windowCurrent != null) {
+			windowCurrent.setOpacity(0.0);
 			windowCurrent.setVisible(false);
 		}
 		windowCurrent = (GridPane) windowPane.getChildren().get(idx);
 
 		windowCurrent.setVisible(true);
+		Timeline change = new Timeline();
+		change.getKeyFrames().add(new KeyFrame(new Duration(500), new KeyValue(windowCurrent.opacityProperty(), 1.0)));
+		change.play();
 				
 	}
 
